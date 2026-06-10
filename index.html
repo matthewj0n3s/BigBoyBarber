@@ -1,4 +1,5 @@
-<<!DOCTYPE html>
+cat > /mnt/user-data/outputs/bigboyz.html << 'HTMLEOF'
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -20,9 +21,7 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   html { scroll-behavior: smooth; }
-
   body {
     background: var(--black);
     color: var(--white);
@@ -32,38 +31,163 @@
 
   /* ── NAV ── */
   nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 18px 40px;
-    background: rgba(10,10,10,0.92);
-    backdrop-filter: blur(12px);
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    background: rgba(10,10,10,0.97);
+    backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled {
+    box-shadow: 0 4px 32px rgba(0,0,0,0.6);
+  }
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
   }
   .nav-logo {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.6rem;
-    letter-spacing: 2px;
+    font-size: 1.55rem;
+    letter-spacing: 3px;
     color: var(--white);
+    text-decoration: none;
+    flex-shrink: 0;
   }
   .nav-logo span { color: var(--red); }
-  .nav-links { display: flex; gap: 32px; list-style: none; }
+
+  /* Center links */
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    list-style: none;
+    flex: 1;
+    justify-content: center;
+  }
   .nav-links a {
     color: var(--muted);
     text-decoration: none;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    transition: color 0.2s;
+    padding: 8px 14px;
+    border-radius: 2px;
+    transition: color 0.2s, background 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 2px; left: 50%; right: 50%;
+    height: 2px;
+    background: var(--red);
+    transition: left 0.25s ease, right 0.25s ease;
+    border-radius: 1px;
   }
   .nav-links a:hover { color: var(--white); }
-  .nav-book {
-    background: var(--red);
-    color: var(--white) !important;
-    padding: 8px 20px;
-    border-radius: 2px;
-    font-weight: 500;
+  .nav-links a:hover::after,
+  .nav-links a.active::after { left: 14px; right: 14px; }
+  .nav-links a.active { color: var(--white); }
+
+  /* Right side */
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
   }
-  .nav-book:hover { background: var(--red-dark) !important; color: var(--white) !important; }
+  .nav-phone {
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+  .nav-phone:hover { color: var(--white); }
+  .nav-book-btn {
+    background: var(--red);
+    color: var(--white);
+    padding: 10px 22px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background 0.2s, transform 0.1s;
+    white-space: nowrap;
+  }
+  .nav-book-btn:hover { background: var(--red-dark); transform: translateY(-1px); }
+
+  /* Hamburger */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 6px;
+    margin-left: auto;
+    background: none;
+    border: none;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 24px; height: 2px;
+    background: var(--white);
+    border-radius: 1px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* Mobile menu */
+  .nav-mobile {
+    display: none;
+    flex-direction: column;
+    background: rgba(10,10,10,0.98);
+    border-top: 1px solid var(--border);
+    padding: 16px 24px 24px;
+    gap: 4px;
+  }
+  .nav-mobile.open { display: flex; }
+  .nav-mobile a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.2s;
+  }
+  .nav-mobile a:hover, .nav-mobile a.active { color: var(--white); }
+  .nav-mobile a:last-child { border-bottom: none; }
+  .nav-mobile-book {
+    margin-top: 16px;
+    background: var(--red) !important;
+    color: var(--white) !important;
+    text-align: center;
+    padding: 14px 0 !important;
+    font-family: 'Oswald', sans-serif;
+    border-bottom: none !important;
+    border-radius: 2px;
+    font-size: 0.9rem !important;
+    letter-spacing: 2px !important;
+  }
+  .nav-mobile-phone {
+    text-align: center;
+    color: var(--muted) !important;
+    font-size: 0.78rem !important;
+    letter-spacing: 1px !important;
+    margin-top: 4px;
+    border-bottom: none !important;
+  }
 
   /* ── HERO ── */
   .hero {
@@ -74,7 +198,7 @@
     text-align: center;
     position: relative;
     overflow: hidden;
-    padding: 120px 20px 80px;
+    padding: 140px 20px 80px;
   }
   .hero-bg {
     position: absolute; inset: 0;
@@ -225,7 +349,7 @@
     margin: 20px 0 32px;
   }
 
-  /* ── GALLERY / SLIDESHOW ── */
+  /* ── GALLERY ── */
   #gallery { background: var(--dark); padding: 80px 0; }
   .gallery-header {
     padding: 0 40px 48px;
@@ -286,12 +410,9 @@
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: background 0.2s, border-color 0.2s;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
     border-radius: 2px;
   }
-  .gallery-btn:hover, .gallery-btn:active { background: var(--red); border-color: var(--red); }
+  .gallery-btn:hover { background: var(--red); border-color: var(--red); }
   .gallery-dots {
     display: flex;
     gap: 6px;
@@ -307,7 +428,6 @@
     transition: background 0.2s, transform 0.2s;
   }
   .gdot.active { background: var(--red); transform: scale(1.3); }
-
 
   /* ── SERVICES ── */
   #services { background: var(--black); }
@@ -335,11 +455,7 @@
     transition: height 0.3s ease;
   }
   .service-card:hover::before { height: 100%; }
-  .service-icon {
-    font-size: 1.8rem;
-    margin-bottom: 16px;
-    display: block;
-  }
+  .service-icon { font-size: 1.8rem; margin-bottom: 16px; display: block; }
   .service-name {
     font-family: 'Oswald', sans-serif;
     font-size: 1.1rem;
@@ -347,12 +463,7 @@
     text-transform: uppercase;
     margin-bottom: 8px;
   }
-  .service-desc {
-    color: var(--muted);
-    font-size: 0.85rem;
-    line-height: 1.6;
-    margin-bottom: 20px;
-  }
+  .service-desc { color: var(--muted); font-size: 0.85rem; line-height: 1.6; margin-bottom: 20px; }
   .service-price {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 2rem;
@@ -368,7 +479,7 @@
     margin-left: 4px;
   }
 
-  /* ── ABOUT / BARBERS ── */
+  /* ── ABOUT ── */
   #about { background: var(--dark); }
   .about-grid {
     display: grid;
@@ -378,9 +489,7 @@
     max-width: 1100px;
     margin: 0 auto;
   }
-  .about-img-wrap {
-    position: relative;
-  }
+  .about-img-wrap { position: relative; }
   .about-img-wrap img {
     width: 100%;
     aspect-ratio: 4/5;
@@ -401,17 +510,8 @@
     line-height: 1;
     display: block;
   }
-  .about-badge-label {
-    font-size: 0.65rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-  .barbers-row {
-    display: flex;
-    gap: 24px;
-    margin-top: 40px;
-    flex-wrap: wrap;
-  }
+  .about-badge-label { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; }
+  .barbers-row { display: flex; gap: 24px; margin-top: 40px; flex-wrap: wrap; }
   .barber-tag {
     background: var(--card);
     border: 1px solid var(--border);
@@ -430,17 +530,8 @@
     color: var(--white);
     flex-shrink: 0;
   }
-  .barber-info { }
-  .barber-name {
-    font-family: 'Oswald', sans-serif;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-  }
-  .barber-title {
-    font-size: 0.72rem;
-    color: var(--muted);
-    letter-spacing: 0.5px;
-  }
+  .barber-name { font-family: 'Oswald', sans-serif; font-size: 0.9rem; letter-spacing: 1px; }
+  .barber-title { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.5px; }
 
   /* ── REVIEWS ── */
   #reviews { background: var(--black); }
@@ -467,12 +558,7 @@
     display: block;
     opacity: 0.6;
   }
-  .review-text {
-    font-size: 0.95rem;
-    line-height: 1.7;
-    color: var(--white);
-    margin-bottom: 24px;
-  }
+  .review-text { font-size: 0.95rem; line-height: 1.7; color: var(--white); margin-bottom: 24px; }
   .review-stars { color: #fbbf24; font-size: 0.85rem; margin-bottom: 12px; }
   .review-author {
     font-family: 'Oswald', sans-serif;
@@ -481,34 +567,14 @@
     color: var(--muted);
     text-transform: uppercase;
   }
-  .review-source {
-    font-size: 0.7rem;
-    color: var(--border);
-    letter-spacing: 1px;
-    margin-top: 4px;
-  }
-  .reviews-summary {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    margin-bottom: 48px;
-  }
-  .rating-big {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 5rem;
-    color: var(--white);
-    line-height: 1;
-  }
-  .rating-detail { }
+  .review-source { font-size: 0.7rem; color: var(--border); letter-spacing: 1px; margin-top: 4px; }
+  .reviews-summary { display: flex; align-items: center; gap: 24px; margin-bottom: 48px; }
+  .rating-big { font-family: 'Bebas Neue', sans-serif; font-size: 5rem; color: var(--white); line-height: 1; }
   .rating-stars { color: #fbbf24; font-size: 1.2rem; }
   .rating-count { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
 
   /* ── BOOKING ── */
-  #booking {
-    background: var(--red);
-    text-align: center;
-    padding: 100px 40px;
-  }
+  #booking { background: var(--red); text-align: center; padding: 100px 40px; }
   #booking .section-label { color: rgba(255,255,255,0.7); }
   #booking .section-title { color: var(--white); }
   #booking .section-title span { color: var(--black); }
@@ -601,22 +667,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: gap;
+    flex-wrap: wrap;
     gap: 20px;
   }
-  .footer-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem;
-    letter-spacing: 2px;
-  }
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px; }
   .footer-logo span { color: var(--red); }
-  .footer-tagline {
-    font-size: 0.75rem;
-    color: var(--muted);
-    letter-spacing: 1px;
-    margin-top: 4px;
-    text-transform: uppercase;
-  }
+  .footer-tagline { font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; margin-top: 4px; text-transform: uppercase; }
   .footer-links { display: flex; gap: 24px; }
   .footer-links a {
     color: var(--muted);
@@ -633,12 +689,17 @@
   .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
-  /* ── MOBILE ── */
-  @media (max-width: 768px) {
-    nav { padding: 16px 20px; }
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
     .nav-links { display: none; }
+    .nav-phone { display: none; }
+    .nav-book-btn { display: none; }
+    .nav-hamburger { display: flex; }
+    .nav-inner { gap: 0; }
+  }
+  @media (max-width: 768px) {
     section { padding: 80px 20px; }
-    .hero { padding: 100px 20px 60px; }
+    .hero { padding: 120px 20px 60px; }
     .about-grid { grid-template-columns: 1fr; gap: 40px; }
     .about-badge { right: 0; bottom: -10px; }
     .location-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -655,16 +716,34 @@
 <body>
 
 <!-- NAV -->
-<nav>
-  <div class="nav-logo">BIG<span>BOYZ</span></div>
-  <ul class="nav-links">
-    <li><a href="#gallery">Work</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#reviews">Reviews</a></li>
-    <li><a href="#location">Hours</a></li>
-    <li><a href="https://app.squareup.com/book/L67P057Z165NE/big-boyz-barbershop-port-jervis-ny" target="_blank" class="nav-book">Book Now</a></li>
-  </ul>
+<nav id="mainNav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">BIG<span>BOYZ</span></a>
+    <ul class="nav-links">
+      <li><a href="#gallery" data-section="gallery">Work</a></li>
+      <li><a href="#services" data-section="services">Services</a></li>
+      <li><a href="#about" data-section="about">About</a></li>
+      <li><a href="#reviews" data-section="reviews">Reviews</a></li>
+      <li><a href="#location" data-section="location">Hours</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="tel:+18455063192" class="nav-phone">📞 (845) 506-3192</a>
+      <a href="https://app.squareup.com/book/L67P057Z165NE/big-boyz-barbershop-port-jervis-ny" target="_blank" class="nav-book-btn">Book Now</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <!-- Mobile menu -->
+  <div class="nav-mobile" id="mobileMenu">
+    <a href="#gallery" class="mobile-link">Work</a>
+    <a href="#services" class="mobile-link">Services</a>
+    <a href="#about" class="mobile-link">About</a>
+    <a href="#reviews" class="mobile-link">Reviews</a>
+    <a href="#location" class="mobile-link">Hours</a>
+    <a href="https://app.squareup.com/book/L67P057Z165NE/big-boyz-barbershop-port-jervis-ny" target="_blank" class="nav-mobile-book">Book Your Cut →</a>
+    <a href="tel:+18455063192" class="nav-mobile-phone">📞 (845) 506-3192</a>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -679,22 +758,10 @@
       <a href="tel:+18455063192" class="btn-secondary">Call (845) 506-3192</a>
     </div>
     <div class="hero-stats">
-      <div class="stat">
-        <div class="stat-num">15+</div>
-        <div class="stat-label">Years Open</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">4.4★</div>
-        <div class="stat-label">Google Rating</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">50+</div>
-        <div class="stat-label">Reviews</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">∞</div>
-        <div class="stat-label">Loyal Clients</div>
-      </div>
+      <div class="stat"><div class="stat-num">15+</div><div class="stat-label">Years Open</div></div>
+      <div class="stat"><div class="stat-num">4.4★</div><div class="stat-label">Google Rating</div></div>
+      <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Reviews</div></div>
+      <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Loyal Clients</div></div>
     </div>
   </div>
 </section>
@@ -808,17 +875,17 @@
       <div class="divider"></div>
       <p class="section-body">Big Boyz BarberShop has been the go-to spot in Port Jervis since 2009. This shop runs on skill, consistency, and respect for the craft. No bad cuts. No wasted trips. Just barbers who care about getting it right every single time.</p>
       <p class="section-body" style="margin-top: 16px;">From first-timers to clients who've been coming back for over a decade — everyone leaves satisfied. We cut adults, kids, and everything in between.</p>
-      <div class="barbers-row" style="margin-top: 40px;">
+      <div class="barbers-row">
         <div class="barber-tag">
           <div class="barber-avatar">M</div>
-          <div class="barber-info">
+          <div>
             <div class="barber-name">Marcus (Junior)</div>
             <div class="barber-title">Owner · Master Barber</div>
           </div>
         </div>
         <div class="barber-tag">
           <div class="barber-avatar">H</div>
-          <div class="barber-info">
+          <div>
             <div class="barber-name">Hov</div>
             <div class="barber-title">Senior Barber</div>
           </div>
@@ -839,7 +906,7 @@
       </div>
       <div class="reviews-summary">
         <div class="rating-big">4.4</div>
-        <div class="rating-detail">
+        <div>
           <div class="rating-stars">★★★★☆</div>
           <div class="rating-count">51 Google Reviews</div>
           <a href="https://www.google.com/maps?cid=11579092552790009553" target="_blank" style="font-size:0.75rem; color:var(--red); text-decoration:none; letter-spacing:1px; text-transform:uppercase; margin-top:6px; display:block;">Read All Reviews →</a>
@@ -930,7 +997,7 @@
         <tr><td>Saturday</td><td class="open">10:00 AM – 7:00 PM</td></tr>
         <tr><td>Sunday</td><td class="closed">Closed</td></tr>
       </table>
-      <div class="contact-info" style="margin-top: 32px;">
+      <div class="contact-info">
         <div class="contact-row">
           <span class="contact-icon">📍</span>
           <span class="contact-text"><a href="https://www.google.com/maps?cid=11579092552790009553" target="_blank">22 US-6, Port Jervis, NY 12771</a></span>
@@ -949,9 +1016,7 @@
       <iframe
         class="map-embed"
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3006.0!2d-74.6778!3d41.3555!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c34735558581dd%3A0xa0b1334bfe6b66d1!2sBig%20Boyz%20BarberShop!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
-        allowfullscreen=""
-        loading="lazy"
-        title="Big Boyz BarberShop Location">
+        allowfullscreen="" loading="lazy" title="Big Boyz BarberShop Location">
       </iframe>
       <a href="https://www.google.com/maps/dir/?api=1&destination=Big+Boyz+BarberShop+22+US-6+Port+Jervis+NY" target="_blank" class="btn-secondary" style="display:inline-block; margin-top: 16px; font-family: 'Oswald', sans-serif; font-size: 0.85rem; letter-spacing: 2px;">Get Directions →</a>
     </div>
@@ -992,7 +1057,6 @@ const gLabel = document.getElementById('galleryLabel');
 const gNum = document.getElementById('galleryNum');
 const gDots = document.getElementById('galleryDots');
 
-// Build dots
 gallerySlides.forEach(function(_, i) {
   const d = document.createElement('div');
   d.className = 'gdot' + (i === 0 ? ' active' : '');
@@ -1015,16 +1079,55 @@ function galleryGoTo(n) {
 }
 function galleryNext() { galleryGoTo(gIdx + 1); }
 function galleryPrev() { galleryGoTo(gIdx - 1); }
-
-// Fade transition on img
 gImg.style.transition = 'opacity 0.15s ease';
 
 // ── SCROLL REVEAL ──
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+const revealObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+document.querySelectorAll('.reveal').forEach(function(el) { revealObserver.observe(el); });
+
+// ── NAV: scrolled shadow ──
+window.addEventListener('scroll', function() {
+  const nav = document.getElementById('mainNav');
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// ── NAV: active section highlight ──
+const sections = ['gallery','services','about','reviews','location'];
+const navLinks = document.querySelectorAll('.nav-links a[data-section]');
+
+function updateActiveNav() {
+  let current = '';
+  sections.forEach(function(id) {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= el.offsetTop - 120) current = id;
+  });
+  navLinks.forEach(function(a) {
+    a.classList.toggle('active', a.dataset.section === current);
+  });
+}
+window.addEventListener('scroll', updateActiveNav, { passive: true });
+
+// ── HAMBURGER ──
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+
+hamburger.addEventListener('click', function() {
+  const open = mobileMenu.classList.toggle('open');
+  hamburger.classList.toggle('open', open);
+});
+
+// Close mobile menu when a link is tapped
+document.querySelectorAll('.mobile-link').forEach(function(a) {
+  a.addEventListener('click', function() {
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('open');
+  });
+});
 </script>
 
 </body>
 </html>
+HTMLEOF
+echo "Done. Size: $(wc -c < /mnt/user-data/outputs/bigboyz.html) bytes"
