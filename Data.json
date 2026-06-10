@@ -1,0 +1,5 @@
+{
+  "returncode" : 0,
+  "stdout" : "CSS fixed: True\nJS fixed: True\nHTML count: 1\n",
+  "stderr" : ""
+}
