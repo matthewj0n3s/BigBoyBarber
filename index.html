@@ -233,41 +233,35 @@
     margin: 0 auto;
   }
   .slideshow-outer {
-    width: 100%;
-    max-width: 700px;
+    width: 380px;
     margin: 0 auto;
-    padding: 0 40px;
-    box-sizing: border-box;
   }
   .slideshow {
     position: relative;
+    width: 380px;
     overflow: hidden;
-    width: 100%;
   }
   .slides-track {
     display: flex;
-    transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
-    will-change: transform;
+    transition: transform 0.4s ease-in-out;
   }
   .slide {
-    width: 100%;
-    flex: 0 0 100%;
+    flex: 0 0 380px;
+    width: 380px;
   }
   .slide-inner {
     position: relative;
-    width: 100%;
-    aspect-ratio: 3/4;
+    width: 380px;
+    height: 507px;
     overflow: hidden;
     background: var(--card);
   }
   .slide-inner img {
-    width: 100%;
-    height: 100%;
+    width: 380px;
+    height: 507px;
     object-fit: cover;
     display: block;
-    transition: transform 0.4s ease;
   }
-  .slide-inner:hover img { transform: scale(1.04); }
   .slide-label {
     position: absolute; bottom: 0; left: 0; right: 0;
     background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
@@ -283,7 +277,7 @@
     justify-content: center;
     align-items: center;
     gap: 16px;
-    margin-top: 24px;
+    margin-top: 20px;
   }
   .slide-btn {
     width: 44px; height: 44px;
@@ -294,9 +288,11 @@
     font-size: 1.2rem;
     transition: background 0.2s, border-color 0.2s;
     display: flex; align-items: center; justify-content: center;
+    user-select: none;
+    -webkit-user-select: none;
   }
   .slide-btn:hover { background: var(--red); border-color: var(--red); }
-  .slide-dots { display: flex; gap: 8px; }
+  .slide-dots { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
   .dot {
     width: 6px; height: 6px;
     background: var(--border);
@@ -305,6 +301,12 @@
     transition: background 0.2s, width 0.2s;
   }
   .dot.active { background: var(--red); width: 20px; border-radius: 3px; }
+  @media (max-width: 430px) {
+    .slideshow-outer, .slideshow { width: calc(100vw - 48px); }
+    .slide { flex: 0 0 calc(100vw - 48px); width: calc(100vw - 48px); }
+    .slide-inner { width: calc(100vw - 48px); height: calc((100vw - 48px) * 1.333); }
+    .slide-inner img { width: calc(100vw - 48px); height: calc((100vw - 48px) * 1.333); }
+  }
 
   /* ── SERVICES ── */
   #services { background: var(--black); }
@@ -641,7 +643,6 @@
     .location-grid { grid-template-columns: 1fr; gap: 40px; }
     footer { flex-direction: column; text-align: center; }
     .footer-links { flex-wrap: wrap; justify-content: center; }
-    .slide { min-width: calc(100% / 1.2); }
     .services-grid { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 480px) {
@@ -1029,12 +1030,12 @@
 
 <script>
 // ── SLIDESHOW ──
-const slideshowEl = document.querySelector('.slideshow');
 const track = document.getElementById('slidesTrack');
 const allSlides = track.querySelectorAll('.slide');
 const dotsContainer = document.getElementById('slideDots');
 const total = allSlides.length;
 let currentSlide = 0;
+let busy = false;
 
 function buildDots() {
   dotsContainer.innerHTML = '';
@@ -1046,27 +1047,26 @@ function buildDots() {
   }
 }
 
+function getSlideWidth() {
+  return allSlides[0].getBoundingClientRect().width;
+}
+
 function goTo(n) {
+  if (busy) return;
+  busy = true;
   currentSlide = ((n % total) + total) % total;
-  const w = slideshowEl.offsetWidth;
-  track.style.transform = `translateX(-${currentSlide * w}px)`;
-  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+  const w = getSlideWidth();
+  track.style.transform = 'translateX(-' + (currentSlide * w) + 'px)';
+  document.querySelectorAll('.dot').forEach(function(d, i) {
+    d.classList.toggle('active', i === currentSlide);
+  });
+  setTimeout(function() { busy = false; }, 450);
 }
 
 function slideNext() { goTo(currentSlide + 1); }
 function slidePrev() { goTo(currentSlide - 1); }
 
 buildDots();
-
-// Auto-play
-let autoplay = setInterval(slideNext, 3500);
-
-// Pause on hover
-slideshowEl.addEventListener('mouseenter', () => clearInterval(autoplay));
-slideshowEl.addEventListener('mouseleave', () => { autoplay = setInterval(slideNext, 3500); });
-
-// Recalculate on resize
-window.addEventListener('resize', () => goTo(currentSlide));
 
 // ── SCROLL REVEAL ──
 const observer = new IntersectionObserver((entries) => {
