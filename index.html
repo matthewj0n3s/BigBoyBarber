@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -226,87 +226,88 @@
   }
 
   /* ── GALLERY / SLIDESHOW ── */
-  #gallery { background: var(--dark); padding: 100px 0; }
+  #gallery { background: var(--dark); padding: 80px 0; }
   .gallery-header {
-    padding: 0 40px 60px;
+    padding: 0 40px 48px;
     max-width: 1100px;
     margin: 0 auto;
   }
-  .slideshow-outer {
-    width: 380px;
-    margin: 0 auto;
-  }
-  .slideshow {
-    position: relative;
-    width: 380px;
-    overflow: hidden;
-  }
-  .slides-track {
+  .gallery-wrap {
     display: flex;
-    transition: transform 0.4s ease-in-out;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 0 20px;
   }
-  .slide {
-    flex: 0 0 380px;
-    width: 380px;
-  }
-  .slide-inner {
+  .gallery-frame {
+    width: 100%;
+    max-width: 400px;
     position: relative;
-    width: 380px;
-    height: 507px;
+    border-radius: 4px;
     overflow: hidden;
     background: var(--card);
   }
-  .slide-inner img {
-    width: 380px;
-    height: 507px;
+  .gallery-frame img {
+    width: 100%;
+    aspect-ratio: 3 / 4;
     object-fit: cover;
     display: block;
   }
-  .slide-label {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
-    padding: 32px 16px 16px;
+  .gallery-frame-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+    padding: 28px 16px 14px;
     font-family: 'Oswald', sans-serif;
-    font-size: 0.9rem;
-    letter-spacing: 1.5px;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--white);
   }
-  .slideshow-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
-    margin-top: 20px;
+  .gallery-counter {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
   }
-  .slide-btn {
-    width: 44px; height: 44px;
+  .gallery-counter span { color: var(--white); }
+  .gallery-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .gallery-btn {
+    width: 48px; height: 48px;
     border: 1px solid var(--border);
     background: transparent;
     color: var(--white);
+    font-size: 1.3rem;
     cursor: pointer;
-    font-size: 1.2rem;
-    transition: background 0.2s, border-color 0.2s;
     display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, border-color 0.2s;
     user-select: none;
     -webkit-user-select: none;
+    touch-action: manipulation;
+    border-radius: 2px;
   }
-  .slide-btn:hover { background: var(--red); border-color: var(--red); }
-  .slide-dots { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-  .dot {
-    width: 6px; height: 6px;
-    background: var(--border);
+  .gallery-btn:hover, .gallery-btn:active { background: var(--red); border-color: var(--red); }
+  .gallery-dots {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 200px;
+  }
+  .gdot {
+    width: 7px; height: 7px;
     border-radius: 50%;
+    background: var(--border);
     cursor: pointer;
-    transition: background 0.2s, width 0.2s;
+    transition: background 0.2s, transform 0.2s;
   }
-  .dot.active { background: var(--red); width: 20px; border-radius: 3px; }
-  @media (max-width: 430px) {
-    .slideshow-outer, .slideshow { width: calc(100vw - 48px); }
-    .slide { flex: 0 0 calc(100vw - 48px); width: calc(100vw - 48px); }
-    .slide-inner { width: calc(100vw - 48px); height: calc((100vw - 48px) * 1.333); }
-    .slide-inner img { width: calc(100vw - 48px); height: calc((100vw - 48px) * 1.333); }
-  }
+  .gdot.active { background: var(--red); transform: scale(1.3); }
+
 
   /* ── SERVICES ── */
   #services { background: var(--black); }
@@ -720,80 +721,25 @@
   </div>
 </div>
 
-<!-- GALLERY / SLIDESHOW -->
+<!-- GALLERY -->
 <section id="gallery">
   <div class="gallery-header reveal">
     <p class="section-label">The Work</p>
     <h2 class="section-title">Fresh Cuts,<br><span>Every Time</span></h2>
     <div class="divider"></div>
   </div>
-  <div class="slideshow-outer">
-  <div class="slideshow">
-    <div class="slides-track" id="slidesTrack">
-      <!-- Slide 1 -->
-      <div class="slide">
-        <div class="slide-inner">
-          <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=600&q=80" alt="Low fade haircut" loading="lazy">
-          <div class="slide-label">Low Fade</div>
-        </div>
-      </div>
-      <!-- Slide 2 -->
-      <div class="slide">
-        <div class="slide-inner">
-          <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&q=80" alt="Clean taper fade" loading="lazy">
-          <div class="slide-label">Taper Fade</div>
-        </div>
-      </div>
-      <!-- Slide 3 -->
-      <div class="slide">
-        <div class="slide-inner">
-          <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&q=80" alt="Skin fade" loading="lazy">
-          <div class="slide-label">Skin Fade</div>
-        </div>
-      </div>
-      <!-- Slide 4 -->
-      <div class="slide">
-        <div class="slide-inner">
-          <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=600&q=80" alt="Beard lineup" loading="lazy">
-          <div class="slide-label">Beard Lineup</div>
-        </div>
-      </div>
-      <!-- Slide 5 -->
-      <div class="slide">
-        <div class="slide-inner">
-          <img src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=600&q=80" alt="Classic cut" loading="lazy">
-          <div class="slide-label">Classic Cut</div>
-        </div>
-      </div>
-      <!-- Slide 6 -->
-      <div class="slide">
-        <div class="slide-inner">
-          <img src="https://images.unsplash.com/photo-1562004760-aceed7bb0fe3?w=600&q=80" alt="High fade" loading="lazy">
-          <div class="slide-label">High Fade</div>
-        </div>
-      </div>
-      <!-- Slide 7 -->
-      <div class="slide">
-        <div class="slide-inner">
-          <img src="https://images.unsplash.com/photo-1534297635766-a262cdcb8ee4?w=600&q=80" alt="Fresh shave" loading="lazy">
-          <div class="slide-label">Straight Shave</div>
-        </div>
-      </div>
-      <!-- Slide 8 -->
-      <div class="slide">
-        <div class="slide-inner">
-          <img src="https://images.unsplash.com/photo-1559599101-f09722fb4948?w=600&q=80" alt="Kids cut" loading="lazy">
-          <div class="slide-label">Kids Cut</div>
-        </div>
-      </div>
+  <div class="gallery-wrap">
+    <div class="gallery-frame">
+      <img id="galleryImg" src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=600&q=80" alt="Haircut">
+      <div class="gallery-frame-label" id="galleryLabel">Low Fade</div>
     </div>
-  </div><!-- /.slideshow -->
-  <div class="slideshow-controls">
-    <button class="slide-btn" id="prevBtn" onclick="slidePrev()">&#8592;</button>
-    <div class="slide-dots" id="slideDots"></div>
-    <button class="slide-btn" id="nextBtn" onclick="slideNext()">&#8594;</button>
+    <div class="gallery-counter"><span id="galleryNum">1</span> / 8</div>
+    <div class="gallery-controls">
+      <button class="gallery-btn" onclick="galleryPrev()">&#8592;</button>
+      <div class="gallery-dots" id="galleryDots"></div>
+      <button class="gallery-btn" onclick="galleryNext()">&#8594;</button>
+    </div>
   </div>
-  </div><!-- /.slideshow-outer -->
 </section>
 
 <!-- SERVICES -->
@@ -1029,44 +975,49 @@
 </footer>
 
 <script>
-// ── SLIDESHOW ──
-const track = document.getElementById('slidesTrack');
-const allSlides = track.querySelectorAll('.slide');
-const dotsContainer = document.getElementById('slideDots');
-const total = allSlides.length;
-let currentSlide = 0;
-let busy = false;
+// ── GALLERY ──
+const gallerySlides = [
+  { src: 'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=600&q=80', label: 'Low Fade' },
+  { src: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&q=80', label: 'Taper Fade' },
+  { src: 'https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&q=80', label: 'Skin Fade' },
+  { src: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=600&q=80', label: 'Beard Lineup' },
+  { src: 'https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=600&q=80', label: 'Classic Cut' },
+  { src: 'https://images.unsplash.com/photo-1562004760-aceed7bb0fe3?w=600&q=80', label: 'High Fade' },
+  { src: 'https://images.unsplash.com/photo-1534297635766-a262cdcb8ee4?w=600&q=80', label: 'Straight Shave' },
+  { src: 'https://images.unsplash.com/photo-1559599101-f09722fb4948?w=600&q=80', label: 'Kids Cut' }
+];
+let gIdx = 0;
+const gImg = document.getElementById('galleryImg');
+const gLabel = document.getElementById('galleryLabel');
+const gNum = document.getElementById('galleryNum');
+const gDots = document.getElementById('galleryDots');
 
-function buildDots() {
-  dotsContainer.innerHTML = '';
-  for (let i = 0; i < total; i++) {
-    const d = document.createElement('div');
-    d.className = 'dot' + (i === 0 ? ' active' : '');
-    d.onclick = () => goTo(i);
-    dotsContainer.appendChild(d);
-  }
-}
+// Build dots
+gallerySlides.forEach(function(_, i) {
+  const d = document.createElement('div');
+  d.className = 'gdot' + (i === 0 ? ' active' : '');
+  d.onclick = function() { galleryGoTo(i); };
+  gDots.appendChild(d);
+});
 
-function getSlideWidth() {
-  return allSlides[0].getBoundingClientRect().width;
-}
-
-function goTo(n) {
-  if (busy) return;
-  busy = true;
-  currentSlide = ((n % total) + total) % total;
-  const w = getSlideWidth();
-  track.style.transform = 'translateX(-' + (currentSlide * w) + 'px)';
-  document.querySelectorAll('.dot').forEach(function(d, i) {
-    d.classList.toggle('active', i === currentSlide);
+function galleryGoTo(n) {
+  gIdx = ((n % gallerySlides.length) + gallerySlides.length) % gallerySlides.length;
+  gImg.style.opacity = '0';
+  setTimeout(function() {
+    gImg.src = gallerySlides[gIdx].src;
+    gLabel.textContent = gallerySlides[gIdx].label;
+    gNum.textContent = gIdx + 1;
+    gImg.style.opacity = '1';
+  }, 150);
+  document.querySelectorAll('.gdot').forEach(function(d, i) {
+    d.classList.toggle('active', i === gIdx);
   });
-  setTimeout(function() { busy = false; }, 450);
 }
+function galleryNext() { galleryGoTo(gIdx + 1); }
+function galleryPrev() { galleryGoTo(gIdx - 1); }
 
-function slideNext() { goTo(currentSlide + 1); }
-function slidePrev() { goTo(currentSlide - 1); }
-
-buildDots();
+// Fade transition on img
+gImg.style.transition = 'opacity 0.15s ease';
 
 // ── SCROLL REVEAL ──
 const observer = new IntersectionObserver((entries) => {
